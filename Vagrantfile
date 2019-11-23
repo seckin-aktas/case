@@ -94,9 +94,9 @@ curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add
 apt-add-repository "deb http://apt.kubernetes.io/ kubernetes-xenial main"
 
 echo "install and check kubernetes"
+apt-get update
 apt-get install kubeadm kubelet kubectl  -y
 apt-mark hold kubelet kubeadm kubectl
-kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 
 echo "disable swap"
 swapoff -a
@@ -111,9 +111,8 @@ chown $(id -u):$(id -g) $HOME/.kube/config
 echo "check cluster"
 kubectl get nodes
 
-sleep 30
-echo "let run pod on master"
-kubectl taint nodes --all node-role.kubernetes.io/master-
+echo "installing flannel"
+kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml 
 
 echo "deploy app"
 cd /case 

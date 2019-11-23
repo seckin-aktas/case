@@ -80,17 +80,10 @@ spec:
           value: "3306"
         - name: MYSQL_USERNAME
           value: root
-        image: 415711/case:latest
+        image: 415711/case:v1
         name: app
         ports:
         - containerPort: 3000
         resources: {}
         volumeMounts:
-        - mountPath: /case
-          name: app-claim0
-      restartPolicy: Always
-      volumes:
-      - name: app-claim0
-        persistentVolumeClaim:
-          claimName: app-claim0
 status: {}
