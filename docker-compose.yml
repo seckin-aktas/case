@@ -1,0 +1,26 @@
+version: '3'
+services:
+  app:
+    image: 415711/case:latest
+    links:
+    -  db
+    ports:
+    - "3000:3000"
+    volumes:
+    - ./case:/case
+    environment:
+      MYSQL_USERNAME: root
+      MYSQL_PASSWORD: root
+      MYSQL_INSTANCE_NAME: app
+      MYSQL_PORT_3306_TCP_PORT: 3306
+      MYSQL_PORT_3306_TCP_ADDR: db
+    command: "gunicorn -w 4 application:application --reload --bind 0.0.0.0:3000"
+  db:
+    image: mysql:5.7
+    ports:
+      - "32000:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: app
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d/:ro
