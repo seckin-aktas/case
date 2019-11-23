@@ -113,6 +113,10 @@ sleep 30
 echo "let run pod on master"
 kubectl taint nodes --all node-role.kubernetes.io/master-
 
+echo "deploy app"
+cd /case 
+kubectl create -f db_deployment.yaml
+kubectl create -f app_deployment.yaml 
 
 SHELL
 end
