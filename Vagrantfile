@@ -77,6 +77,42 @@ end
   #   apt-get install -y apache2
   # SHELL
 
+config.vm.provision "shell", inline: <<-SHELL
+echo "update repos"
+apt-get update
+apt-get install apt-transport-https curl -y
 
 
+echo "instaling docker"
+apt-get install docker.io -y
+systemctl enable docker
+
+echo "download kubernetes repos"
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add
+apt-add-repository "deb http://apt.kubernetes.io/ kubernetes-xenial main"
+
+echo "install and check kubernetes"
+apt-get install kubeadm kubelet kubectl  -y
+apt-mark hold kubelet kubeadm kubectl
+kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+
+echo "disable swap"
+swapoff -a
+sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
+
+echo "initialize Kubernetes"
+kubeadm init  --pod-network-cidr=10.244.0.0/16
+mkdir -p $HOME/.kube
+cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+chown $(id -u):$(id -g) $HOME/.kube/config
+
+echo "check cluster"
+kubectl get nodes
+
+sleep 30
+echo "let run pod on master"
+kubectl taint nodes --all node-role.kubernetes.io/master-
+
+
+SHELL
 end
