@@ -51,6 +51,10 @@ kubectl get nodes
 echo "installing flannel"
 kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml 
 
+echo "waiting for coredns status turning running"
+sleep 60 
+kubectl taint nodes --all node-role.kubernetes.io/master-
+
 echo "create persistent volume"
 cd /case 
 mkdir /mnt/data 
