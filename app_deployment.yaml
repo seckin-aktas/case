@@ -79,4 +79,13 @@ spec:
         - containerPort: 3000
         resources: {}
         volumeMounts:
+        - mountPath: /case
+          name: app-data
+          readOnly: true
+      restartPolicy: Always
+      volumes:
+      - name: app-data
+        persistentVolumeClaim:
+          claimName: app-pv-claim
+          readOnly: true
 status: {}
