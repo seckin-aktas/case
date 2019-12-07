@@ -24,7 +24,7 @@ kind: PersistentVolumeClaim
 metadata:
   creationTimestamp: null
   labels:
-    io.kompose.service: db-claim
+    io.kompose.service: db-claim0
   name: db-pv-claim
 spec:
   accessModes:
@@ -73,12 +73,8 @@ spec:
         resources: {}
         volumeMounts:
         - mountPath: /mnt/data
-          name: db-data
+          name: db-pv-claim
           readOnly: true
       restartPolicy: Always
       volumes:
-      - name: db-data
-        persistentVolumeClaim:
-          claimName: db-pv-claim
-          readOnly: true
 status: {}

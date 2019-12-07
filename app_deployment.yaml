@@ -13,6 +13,7 @@ spec:
   - name: "3000"
     port: 3000
     targetPort: 3000
+    nodePort: 3000  
   selector:
     io.kompose.service: app
 status:
@@ -61,15 +62,7 @@ spec:
         io.kompose.service: app
     spec:
       containers:
-      - args:
-        - gunicorn
-        - -w
-        - "4"
-        - application:application
-        - --reload
-        - --bind
-        - 0.0.0.0:3000
-        env:
+      - env: 
         - name: MYSQL_INSTANCE_NAME
           value: app
         - name: MYSQL_PASSWORD
@@ -80,7 +73,7 @@ spec:
           value: "3306"
         - name: MYSQL_USERNAME
           value: root
-        image: 415711/case:v1
+        image: 415711/case:v23
         name: app
         ports:
         - containerPort: 3000

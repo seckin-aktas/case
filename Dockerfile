@@ -1,8 +1,19 @@
-FROM alpine:3.7
-RUN apk add --update py-pip python-dev py-mysqldb mariadb-dev mariadb-client-libs
+FROM python:2.7.17-alpine3.10
 
-RUN apk --no-cache add --virtual build-dependencies build-base py-mysqldb gcc libc-dev libffi-dev mariadb-dev
+WORKDIR /app
 
-RUN pip install gunicorn flask mysqlclient
+RUN apk add --no-cache mariadb-connector-c-dev && \
+    apk add --no-cache --virtual .build-deps \
+        build-base \
+        mariadb-dev && \
+    pip install mysqlclient && \
+    apk del .build-deps 
 
-WORKDIR /case/
+ADD requirements.txt .
+RUN pip install -r requirements.txt
+
+EXPOSE 3000
+
+ADD main.py /app
+
+CMD ["gunicorn", "-b", "0.0.0.0:3000", "main:application", "--reload"]

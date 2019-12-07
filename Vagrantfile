@@ -10,9 +10,9 @@ Vagrant.configure("2") do |config|
 
 end 
 
-  config.vm.network "forwarded_port", guest: 3000, host: 3000
+  config.vm.network "forwarded_port", guest: 30005, host: 3000
   config.vm.network "forwarded_port", guest: 6443, host: 6443
-  config.vm.network "forwarded_port", guest: 3306, host: 3306
+  config.vm.network "forwarded_port", guest: 30006, host: 3306
  
   config.vm.network "public_network", type: "dhcp"
   config.vm.synced_folder "~/case", "/case"
@@ -55,6 +55,8 @@ echo "deploy app"
 cd /case 
 kubectl create -f db_deployment.yaml
 kubectl create -f app_deployment.yaml 
+kubectl create -f service_app.yaml 
+kubectl create -f db_app.yaml 
 
 SHELL
 end
