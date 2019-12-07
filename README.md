@@ -16,3 +16,4 @@ Thats all
 
 
 PS: Changes will be automatically deploy on the main.py 
+PS1: You can run application from localhost ( http://127.0.0.1:3000)
