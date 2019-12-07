@@ -51,12 +51,19 @@ kubectl get nodes
 echo "installing flannel"
 kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml 
 
-echo "deploy app"
+echo "create persistent volume"
 cd /case 
+mkdir /mnt/data 
+sh -c "echo 'Hello from Kubernetes storage' > /mnt/data/index.html"
+
+kubectl create -f db_pv.yaml
+kubectl create -f db_pvc.yaml
+
+echo "create pods"
 kubectl create -f db_deployment.yaml
 kubectl create -f app_deployment.yaml 
 kubectl create -f service_app.yaml 
-kubectl create -f db_app.yaml 
+kubectl create -f service_db.yaml 
 
 SHELL
 end
