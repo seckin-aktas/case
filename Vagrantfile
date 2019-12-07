@@ -62,6 +62,9 @@ sh -c "echo 'Hello from Kubernetes storage' > /mnt/data/index.html"
 
 kubectl create -f db_pv.yaml
 kubectl create -f db_pvc.yaml
+kubectl create -f app_pv.yaml
+kubectl create -f app_pvc.yaml
+
 
 echo "create pods"
 kubectl create -f db_deployment.yaml
